@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    
+    if message
+        p #{message}
+
+    form(action="/users/register_save", method="post")
+        label(for="firstNameInput") First name : 
+        input(type="text", name="firstName")
+        br
+        label(for="lastNameInput") Last name : 
+        input(type="text", name="lastName")
+        br
+        label(for="emailInput") Email : 
+        input(type="email", name="email")
+        br
+        label(for="password") Password : 
+        input(type="password", name="password")
+        br
+        label(for="password") Confirm password : 
+        input(type="password", name="confirmPassword")
+        br
+        button(type="submit") Register
