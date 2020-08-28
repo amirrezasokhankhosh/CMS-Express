@@ -1,3 +1,4 @@
+
 var categories = require('../categories');
 exports.seed = function(knex) {
   // Deletes ALL existing entries

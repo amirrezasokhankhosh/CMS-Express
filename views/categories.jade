@@ -3,9 +3,9 @@ extends layout
 block content
     ul
         for category in categories
-            li #{category.categorie_1} - #{category.categorie_2} - #{category.categorie_3} - #{category.categorie_4}
+            li #{category.category_1} - #{category.category_2} - #{category.category_3} - #{category.category_4}  ||| #[a(href="http://localhost:3001/edit_category/#{category.categoriesId}", title="title") Edit category] ||| #[a(href="http://localhost:3001/delete_category/#{category.categoriesId}", title="title") Delete category]
         else
             li Sorry, No categories added yet!
-    a(href="http://localhost:3000/new_categorie", title="new category") New category
+    a(href="http://localhost:3001/new_category", title="new category") New category
 
    

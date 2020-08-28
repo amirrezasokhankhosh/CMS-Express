@@ -1,8 +1,8 @@
 module.exports = [
     {
-        categorie_1: "Action",
-        categorie_2: "Comedy",
-        categorie_3: "",
-        categorie_4: "",
+        category_1: "Action",
+        category_2: "Comedy",
+        category_3: "",
+        category_4: "",
     }
 ]

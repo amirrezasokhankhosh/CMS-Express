@@ -1,2 +1,0 @@
-DATA BASE : cms_db
-ROLE : cms_role , PASSWORD : Sadr

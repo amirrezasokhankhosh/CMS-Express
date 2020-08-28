@@ -1,0 +1,21 @@
+extends layout
+
+block content
+    
+    if message
+        p #{message}
+
+    form(action="/edit_category_save/#{id}", method="post")
+        label(for="category_1") First category : 
+        input(type="text", name="category_1" , value="#{category.category_1}")
+        br
+        label(for="category_2") Second category : 
+        input(type="text", name="category_2", value="#{category.category_2}")
+        br
+        label(for="category_3") Third category : 
+        input(type="text", name="category_3", value="#{category.category_3}")
+        br
+        label(for="category_4") Fourth category : 
+        input(type="text", name="category_4", value="#{category.category_4}")
+        br
+        button(type="submit") Save

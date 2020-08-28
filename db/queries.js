@@ -20,4 +20,16 @@ module.exports = {
         return knex('categories');
     },
 
+    updateCategories(id , categories){
+        return knex('categories').where('categoriesId' , id).update(categories);
+    },
+
+    getOneCategory(id){
+        return knex('categories').where('categoriesId' , id).first();
+    },
+
+    deleteOnCategory(id){
+        return knex('categories').where('categoriesId' , id).del();
+    },
+
 };

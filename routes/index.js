@@ -4,14 +4,14 @@ var defineUser = require('./authTokens');
 var queries = require('../db/queries');
 
 
-// CHECK FOR VALIDATIONS 
+// CHECK FOR VALIDATIONS FUNCTIONS
 
-function isValidCategorie(categorie) {
-  const hasCategorie_1 = typeof categorie.categorie_1 == 'string' && categorie.categorie_1.trim() != '';
-  const hasCategorie_2 = typeof categorie.categorie_2 == 'string' && categorie.categorie_1.trim() != '';
-  const hasCategorie_3 = typeof categorie.categorie_3 == 'string' && categorie.categorie_1.trim() != '';
-  const hasCategorie_4 = typeof categorie.categorie_4 == 'string' && categorie.categorie_1.trim() != '';
-  return hasCategorie_1 || hasCategorie_2 || hasCategorie_3 || hasCategorie_4;
+function isValidCategory(categorie) {
+  const hasCategory_1 = typeof categorie.category_1 == 'string' && categorie.category_1.trim() != '';
+  const hasCategory_2 = typeof categorie.category_2 == 'string' && categorie.category_1.trim() != '';
+  const hasCategory_3 = typeof categorie.category_3 == 'string' && categorie.category_1.trim() != '';
+  const hasCategory_4 = typeof categorie.category_4 == 'string' && categorie.category_1.trim() != '';
+  return hasCategory_1 || hasCategory_2 || hasCategory_3 || hasCategory_4;
 }
 
 /* GET home page. */
@@ -28,6 +28,9 @@ router.get('/dashboard' , function(req , res , next){
   }
 });
 
+///////////////////////////////////////////////////////////////////////////////////////
+//////////////////////// ROUTES THAT ARE RELATED TO CATEGORIES ////////////////////////
+
 router.get('/categories' , function(req , res , next){
   defineUser(req);
   if (req.user) {
@@ -40,25 +43,25 @@ router.get('/categories' , function(req , res , next){
   }
 });
 
-router.get('/new_categorie' , function(req , res , next){
+router.get('/new_category' , function(req , res , next){
   defineUser(req);
   if (req.user) {
-    res.render('new_categorie');
+    res.render('new_category');
   } else {
     res.redirect('/users/login');
   }
 });
 
-router.post('/new_categorie_save' , function(req , res , next){
+router.post('/new_category_save' , function(req , res , next){
   defineUser(req);
   if (req.user) {
-    if(isValidCategorie(req.body)){
-      var categorie = req.body;
+    if(isValidCategory(req.body)){
+      var category = req.body;
       queries.getAllCategories().then(categories => {
         for (var i = 0 ; i < categories.length ; i++){
-          if (categorie.categorie_1 === categories[i].categorie_1 && categorie.categorie_2 === categories[i].categorie_2 && categorie.categorie_3 === categories[i].categorie_3 && categorie.categorie_4 === categories[i].categorie_4){
+          if (category.category_1 === categories[i].category_1 && category.category_2 === categories[i].category_3 && category.categorie_3 === categories[i].category_3 && category.category_4 === categories[i].category_4){
             context = {message : 'This category Already exist .'};
-            return res.render('new_categorie' , context);
+            return res.render('new_category' , context);
           }
         }
         queries.createCategories(req.body).then(() => {
@@ -68,11 +71,68 @@ router.post('/new_categorie_save' , function(req , res , next){
       
     } else {
       context = {message : 'Please enter at leaste one categorie'};
-      res.render('new_categorie' , context);
+      res.render('new_category' , context);
     }
   } else {
     res.redirect('/users/login');
   }
 });
+
+router.get('/edit_category/:id' , function(req , res , next){
+  defineUser(req);
+  if (req.user) {
+    queries.getOneCategory(req.params.id).then(category => {
+      context = {id : req.params.id , category : category};
+      res.render('edit_category' , context);
+    });
+  } else {
+    res.redirect('/users/login');
+  }
+});
+
+router.post('/edit_category_save/:id' , function(req , res , next){
+  defineUser(req);
+  if (req.user) {
+    if(isValidCategory(req.body)){
+      var category = req.body;
+      queries.getAllCategories().then(categories => {
+        for (var i = 0 ; i < categories.length ; i++){
+          if (category.category_1 === categories[i].category_1 && category.category_2 === categories[i].category_2 && category.category_3 === categories[i].category_3 && category.category_4 === categories[i].category_4){
+            queries.getOneCategory(req.params.id).then(category => {
+              context = {id : req.params.id , category : category, message : 'This category Already exist .'};
+              return res.render('edit_category' , context);
+            });
+          }
+        }
+        queries.updateCategories(req.params.id , req.body).then(() => {
+          return res.redirect('/categories');
+        });
+      });
+      
+    } else {
+      // i have to rerurn category
+      queries.getOneCategory(req.params.id).then(category => {
+        context = {id : req.params.id , category : category, message : 'Please enter at leaste one categorie'};
+        return res.render('edit_category' , context);
+      });
+    }
+  } else {
+    res.redirect('/users/login');
+  }
+});
+
+router.get('/delete_category/:id' , function(req , res , next){
+  defineUser(req);
+  if (req.user) {
+    queries.deleteOnCategory(req.params.id).then(() => {
+      res.redirect('/categories');
+    });
+  } else {
+    res.redirect('/users/login');
+  }
+})
+
+//////////////////////////////////////////////////////////////////////////////////////
+
 
 module.exports = router;

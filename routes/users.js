@@ -61,16 +61,16 @@ router.post('/register_save' , function(req , res , next){
       if(isValidUser(user)){
         queries.createUser(user).then(() => {
           context = {message: 'Registration Complete. Please login to continue.'}
-          res.redirect('/login' , context)
+          return res.redirect('/users/login');
         });
       } else {
         context = {message : 'Complete the form correctly .'};
-        res.render('register' , context)
+        return res.render('register' , context);
       }
       
   } else {
       context = {message : 'Enter the exact password in confirm password input place .'};
-      res.render('register', context);
+      return res.render('register', context);
   }
 });
 
