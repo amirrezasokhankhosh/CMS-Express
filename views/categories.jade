@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    ul
+        for category in categories
+            li #{category.categorie_1} - #{category.categorie_2} - #{category.categorie_3} - #{category.categorie_4}
+        else
+            li Sorry, No categories added yet!
+    a(href="http://localhost:3000/new_categorie", title="new category") New category
+
+   

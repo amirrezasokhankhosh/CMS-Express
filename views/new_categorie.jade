@@ -1,0 +1,21 @@
+extends layout
+
+block content
+    
+    if message
+        p #{message}
+
+    form(action="/new_categorie_save", method="post")
+        label(for="categorie_1") First categorie : 
+        input(type="text", name="categorie_1")
+        br
+        label(for="categorie_2") Second categorie : 
+        input(type="text", name="categorie_2")
+        br
+        label(for="categorie_3") Third categorie : 
+        input(type="text", name="categorie_3")
+        br
+        label(for="categorie_4") Fourth categorie : 
+        input(type="text", name="categorie_4")
+        br
+        button(type="submit") Save
