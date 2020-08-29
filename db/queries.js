@@ -81,6 +81,10 @@ module.exports = {
 
     getOneComment(commentId){
         return knex('comment').where('commentId' , commentId).first();
+    },
+
+    deleteAllComments(postId){
+        return knex('comment').where('postId' , postId).del()
     }
 
 

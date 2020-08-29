@@ -1,7 +1,9 @@
 doctype html
 html
   head
-    title= title
+    title CMS Express
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    block header
+      h2 #[#[a(href="http://localhost:3001/", title="Home page") Home page] - #[a(href="http://localhost:3001/dashboard", title="Dashboard") Dashboard] - #[a(href="http://localhost:3001/users/register", title="Register") Register] - #[a(href="http://localhost:3001/users/login", title="Login") Login] - #[a(href="http://localhost:3001/users/logout", title="Logout") Log out]]
     block content

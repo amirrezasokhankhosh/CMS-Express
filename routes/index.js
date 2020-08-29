@@ -16,7 +16,7 @@ function isValidCategory(categorie) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'CMS App' });
 });
 
 router.get('/dashboard' , function(req , res , next){
@@ -242,8 +242,10 @@ router.post('/edit_post_save/:id' , function(req , res , next){
 router.get('/delete_post/:id' , function(req , res , next){
   defineUser(req);
   if (req.user) {
-    queries.deleteOnePost(req.params.id).then(() => {
-      res.redirect('/posts');
+    queries.deleteAllComments(req.params.id).then(() => {
+      queries.deleteOnePost(req.params.id).then(() =>{
+        res.redirect('/posts');
+      });
     });
   } else {
     res.redirect('/users/login');

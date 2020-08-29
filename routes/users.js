@@ -100,6 +100,13 @@ router.post('/login_check' , function(req , res , next){
   });
 });
 
+router.get('/logout' , function(req , res , next){
+  req.user = null;
+  const authToken = req.cookies['AuthToken'];
+  authTokens[authToken] = null;
+  res.redirect('/users/login');
+});
+
 
 module.exports = {
   router: router,
