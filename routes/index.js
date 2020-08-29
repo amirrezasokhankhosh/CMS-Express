@@ -129,7 +129,6 @@ router.get('/delete_category/:id' , function(req , res , next){
 router.get('/posts' , function(req , res , next){
   defineUser(req);
   if (req.user) {
-    console.log(req.user);
     queries.getAllPosts().then(posts => {
       queries.getAllUsers().then(users => {
         context = {posts : posts , users : users};
@@ -184,8 +183,14 @@ router.get('/post/:id' , function(req , res , next){
     queries.getOnePost(req.params.id).then(post => {
       queries.getOneUserById(post.userId).then(userOwner =>{
         queries.getOneCategory(post.categoriesId).then(category => {
-          context = {userInPage : req.user , post : post , userOwner : userOwner , category : category};
-          res.render('post' , context);
+          queries.getAllComments(req.params.id).then(comments =>{
+            queries.getAllUsers().then(users => {
+              context = {users : users , comments : comments , userInPage : req.user , post : post , userOwner : userOwner , category : category};
+              res.render('post' , context);
+            });
+            
+          });
+          
         });
         
       });
@@ -243,12 +248,113 @@ router.get('/delete_post/:id' , function(req , res , next){
   } else {
     res.redirect('/users/login');
   }
-})
+});
 
 ///////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////// ROUTES THAT ARE RELATED TO COMMENTS //////////////////////////
+
+router.get('/new_comment/:id' , function(req , res , next){
+  defineUser(req);
+  if (req.user) {
+    context = {postId : req.params.id};
+    res.render('new_comment' , context);
+  } else {
+    res.redirect('/users/login');
+  }
+});
+
+router.post('/new_comment_save/:id' , function(req , res , next){
+  defineUser(req);
+  if (req.user) {
+    const hasContent = typeof req.body.content == 'string' && req.body.content.trim() != '';
+    if (hasContent){
+      queries.getOneUserByEmail(req.user.email).then(user =>{
+        comment = {
+          userId: user.userId,
+          postId: req.params.id,
+          content: req.body.content
+        }
+        queries.createComment(comment).then(() => {
+          res.redirect('/post/' + req.params.id);
+        });
+      });
+    }
+    else {
+      context = {postId : req.params.id , message : 'Complete form correctly .'};
+      res.render('new_comment' , context);
+    }
+  } else {
+    res.redirect('/users/login');
+  }
+});
+
+router.get('/edit_comment/:postId/:commentId' , function(req , res , next){
+  defineUser(req);
+  if (req.user) {
+    queries.getOneComment(req.params.commentId).then(comment => {
+      context = {comment : comment , postId : req.params.postId , commentId : req.params.commentId};
+      res.render('edit_comment' , context);
+    });
+  } else {
+    res.redirect('/users/login');
+  }
+});
+
+router.post('/edit_comment_save/:postId/:commentId' , function(req , res , next){
+  defineUser(req);
+  if (req.user) {
+    const hasContent = typeof req.body.content == 'string' && req.body.content.trim() != '';
+    if (hasContent){
+      queries.getOneUserByEmail(req.user.email).then(user =>{
+        comment = {
+          userId: user.userId,
+          postId: req.params.postId,
+          content: req.body.content
+        }
+        queries.updateComment(req.params.commentId , comment).then(() => {
+          res.redirect('/post/' + req.params.postId);
+        });
+      });
+    }
+    else {
+      queries.getOneComment(req.params.commentId).then(comment => {
+        context = {comment : comment , postId : req.params.postId , commentId : req.params.commentId , message : 'Complete form correctly .'};
+        res.render('edit_comment' , context);
+      });
+    }
+  } else {
+    res.redirect('/users/login');
+  }
+});
+
+router.get('/delete_comment/:postId/:commentId' , function(req , res , next){
+  defineUser(req);
+  if (req.user) {
+    queries.deleteOneComment(req.params.commentId).then(() => {
+      res.redirect('/post/' + req.params.postId);
+    });
+  } else {
+    res.redirect('/users/login');
+  }
+});
+
+router.get('/comment/:postId/:commentId' , function(req , res , next){
+  defineUser(req);
+  if (req.user) {
+    queries.getOneComment(req.params.commentId).then(comment => {
+      queries.getOneUserById(comment.userId).then(userOwner => {
+        context = {userOwner : userOwner , userInPage : req.user , comment : comment ,  postId : req.params.postId};
+        res.render('comment' , context);
+      });
+    });
+  } else {
+    res.redirect('/users/login');
+  }
+});
+
+
 
 
 

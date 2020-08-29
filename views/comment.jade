@@ -1,0 +1,13 @@
+extends layout
+
+block content
+
+
+    h3 comment from #{userOwner.firstName} #{userOwner.lastName} 
+
+    p Content : #{comment.content}
+
+    if userOwner.userId === userInPage.userId
+        a(href="http://localhost:3001/edit_comment/#{postId}/#{comment.commentId}", title="title") Edit comment
+        br
+        a(href="http://localhost:3001/delete_comment/#{postId}/#{comment.commentId}", title="title") delete comment

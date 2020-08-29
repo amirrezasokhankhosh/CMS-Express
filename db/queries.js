@@ -62,5 +62,28 @@ module.exports = {
         return knex('post').where('postId' , postId).del();
     },
 
+    //FUNCTIONS FOR COMMENTS
+    getAllComments(postId){
+        return knex('comment').where('postId' , postId);
+    },
+
+    createComment(comment){
+        return knex('comment').insert(comment);
+    },
+
+    updateComment(commentId , comment){
+        return knex('comment').where('commentId' , commentId).update(comment);
+    },
+
+    deleteOneComment(commentId){
+        return knex('comment').where('commentId' , commentId).del();
+    },
+
+    getOneComment(commentId){
+        return knex('comment').where('commentId' , commentId).first();
+    }
+
+
+
 
 };

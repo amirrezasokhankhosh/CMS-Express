@@ -13,3 +13,14 @@ block content
         a(href="http://localhost:3001/edit_post/#{post.postId}", title="title") Edit post 
         br
         a(href="http://localhost:3001/delete_post/#{post.postId}", title="title") delete post 
+
+    h3 Comments :
+    ul
+        for comment in comments
+            for user in users
+                if user.userId === comment.userId
+                    li  #[a(href="http://localhost:3001/comment/#{post.postId}/#{comment.commentId}", title="title") #{comment.content} from #{user.firstName} #{user.lastName}]
+        else
+            li No comments added yet.
+
+    a(href="http://localhost:3001/new_comment/#{post.postId}", title="title") new comment
