@@ -40,7 +40,7 @@ router.post('/register_save' , function(req , res , next){
   if (password === confirmPassword) {
 
       // Check if user with the same email is also registered
-      queries.getOneUser(email).then((returnedUser) =>{
+      queries.getOneUserByEmail(email).then((returnedUser) =>{
         if(returnedUser){
           context = {message : 'This email is already used by another user'};
           return res.render('register' , context);
@@ -82,7 +82,7 @@ router.get('/login' , function(req , res , next){
 router.post('/login_check' , function(req , res , next){
   const { email, password } = req.body;
   const hashedPassword = getHashedPassword(password);
-  queries.getOneUser(email).then((returnedUser) =>{
+  queries.getOneUserByEmail(email).then((returnedUser) =>{
     if(returnedUser && returnedUser.password === hashedPassword){
       const authToken = generateAuthToken();
       // Store authentication token

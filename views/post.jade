@@ -1,0 +1,15 @@
+extends layout
+
+block content
+
+
+    h3 Post from #{userOwner.firstName} #{userOwner.lastName} 
+
+    p Content : #{post.content}
+
+    p Category : #{category.category_1} - #{category.category_2} - #{category.category_3} - #{category.category_4}
+
+    if userOwner.userId === userInPage.userId
+        a(href="http://localhost:3001/edit_post/#{post.postId}", title="title") Edit post 
+        br
+        a(href="http://localhost:3001/delete_post/#{post.postId}", title="title") delete post 

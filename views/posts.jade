@@ -1,0 +1,14 @@
+extends layout
+
+block content
+    ul
+        for post in posts
+            for user in users
+                if user.userId === post.userId
+                    li #[a(href="http://localhost:3001/post/#{post.postId}", title="title") #{post.content}] from #{user.firstName} #{user.lastName}
+        else
+            li Sorry, No posts added yet!
+    
+    a(href="http://localhost:3001/new_post", title="new post") New post
+
+   

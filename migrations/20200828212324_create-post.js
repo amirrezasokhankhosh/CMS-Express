@@ -6,9 +6,12 @@ exports.up = function(knex) {
         table.foreign('userId').references('userId').inTable('user');
         table.integer('categoriesId').unsigned().notNullable();
         table.foreign('categoriesId').references('categoriesId').inTable('categories');
+        table.text('content');
     });
 };
 
 exports.down = function(knex) {
     return knex.schema.dropTable('post');
 };
+
+

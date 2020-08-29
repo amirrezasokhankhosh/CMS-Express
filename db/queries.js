@@ -3,12 +3,20 @@ const knex = require('./knex'); //the connection
 module.exports = {
 
     // FUNCTIONS FOR USERS 
-    getOneUser(email){
+    getOneUserByEmail(email){
         return knex('user').where('email' , email).first();
+    },
+
+    getOneUserById(userId){
+        return knex('user').where('userId' , userId).first();
     },
 
     createUser(user){
         return knex('user').insert(user);
+    },
+
+    getAllUsers(){
+        return knex('user');
     },
 
     //FUNCTIONS FOR CATEGORIES
@@ -28,8 +36,31 @@ module.exports = {
         return knex('categories').where('categoriesId' , id).first();
     },
 
-    deleteOnCategory(id){
+    deleteOneCategory(id){
         return knex('categories').where('categoriesId' , id).del();
     },
+
+
+    //FUNCTIONS FOR POSTS
+    getAllPosts(){
+        return knex('post');
+    },
+
+    createPost(post){
+        return knex('post').insert(post);
+    },
+
+    getOnePost(postId){
+        return knex('post').where('postId' , postId).first();
+    },
+
+    updatePost(postId , post){
+        return knex('post').where('postId' , postId).update(post);
+    },
+
+    deleteOnePost(postId){
+        return knex('post').where('postId' , postId).del();
+    },
+
 
 };

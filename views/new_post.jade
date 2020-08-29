@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    
+    if message
+        p #{message}
+
+    form(action="/new_post_save", method="post")
+        label(for="content") content : 
+        input(type="text", name="content")
+        br
+        select(name="categoriesId")
+            for category in categories
+                option(value="#{category.categoriesId}") #{category.category_1} - #{category.category_2} - #{category.category_3} - #{category.category_4} 
+        br
+        button(type="submit") Save
